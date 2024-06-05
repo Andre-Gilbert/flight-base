@@ -52,7 +52,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "flightx.urls"
+ROOT_URLCONF = "base_app.urls"
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "flightx.wsgi.application"
+WSGI_APPLICATION = "base_app.wsgi.application"
 
 
 # Database

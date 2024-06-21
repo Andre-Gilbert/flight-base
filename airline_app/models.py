@@ -1,4 +1,5 @@
 from django.db import models
+from airport_app.models import Airport
 
 
 class Aircraft(models.Model):
@@ -115,7 +116,7 @@ class Employee(models.Model):
     email = models.EmailField("Employee mail")
     role = models.CharField("Employee role:", max_length=2,
                             choices=EMPLOYEE_ROLE_CHOICES)
-    # based_in = models.ForeignKey(Airport, on_delete=models.SET_NULL, null=True)
+    based_in = models.ForeignKey(Airport, on_delete=models.SET_NULL, null=True)
     spouse = models.OneToOneField(
         'self', on_delete=models.SET_NULL, related_name='spouse_of', null=True, blank=True)
 
@@ -152,12 +153,12 @@ class Flight(models.Model):
 
     # Model Attributes
     number = models.CharField("Flight number", max_length=10, primary_key=True)
-    # departure_airport = models.ForeignKey(
-    #     Airport, on_delete=models.CASCADE, related_name="departure_airport")
-    # destination_airport = models.ForeignKey(
-    #     Airport, on_delete=models.CASCADE, related_name="arrival_airport")
-    # aircraft = models.ForeignKey(
-    #     Aircraft, on_delete=models.PROTECT, related_name="aircraft")
+    departure_airport = models.ForeignKey(
+        Airport, on_delete=models.CASCADE, related_name="departure_airport")
+    destination_airport = models.ForeignKey(
+        Airport, on_delete=models.CASCADE, related_name="arrival_airport")
+    aircraft = models.ForeignKey(
+        Aircraft, on_delete=models.PROTECT, related_name="aircraft")
 
     departure_time = models.DateTimeField("Departure Date & Time")
     arrival_time = models.DateTimeField("Arrival Date & Time")

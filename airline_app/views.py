@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 
 from .models import Aircraft, Assignment, Booking, Employee, Flight, Passenger
 from airport_app.models import Airport
+from .forms import FlightFormCreate, FlightFormUpdate, EmployeeForm
 
 import pandas as pd
 
@@ -186,6 +187,7 @@ class EmployeeCreateView(CreateView):
 class EmployeeUpdateView(UpdateView):
     model = Employee
     success_url = reverse_lazy('Employees')
+    form_class = EmployeeForm
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -233,11 +235,13 @@ class FlightListView(ListView):
 
 class FlightsCreateView(CreateView):
     model = Flight
+    form_class = FlightFormCreate
     success_url = reverse_lazy('Flights')
 
 
 class FlightsUpdateView(UpdateView):
     model = Flight
+    form_class = FlightFormUpdate
     success_url = reverse_lazy('Flights')
 
 

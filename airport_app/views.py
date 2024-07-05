@@ -56,7 +56,7 @@ def AirportDetailView(request, pk):
         print('failed to get airport stats')
     return render(
         request,
-        'airportx/airportemployees_list.html',
+        'airport_app/airportemployees_list.html',
         {'airport_info': airport_info,
             'airport_stats': airport_stats, 'runways': runways}
     )

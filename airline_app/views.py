@@ -46,7 +46,7 @@ class AirportSICheck(View):
         """
 
         # Data from: https://datahub.io/core/airport-codes#resource-airport-codes
-        df = pd.read_csv("airlinex/airport_codes.csv",
+        df = pd.read_csv("airline_app/airport_codes.csv",
                          index_col=0, low_memory=False)
         drop_list = ["type", "elevation_ft", "continent", "iso_country",
                      "iso_region", "municipality", "gps_code", "iata_code", "coordinates"]
@@ -128,9 +128,9 @@ class EmployeeListView(ListView):
         # In comparison with the documentation, we added the id here as required for handling with Django
         top_hours_pilot_query = """
         SELECT e.id, e.first_name, e.last_name, SUM(EXTRACT(epoch FROM (f.arrival_time - f.departure_time)) / 3600.0) AS total_hours
-        FROM airlinex_employee e
-        JOIN airlinex_assignment a ON a.employee_id = e.id
-        JOIN airlinex_flight f ON f.number = a.flight_id
+        FROM airline_app_employee e
+        JOIN airline_app_assignment a ON a.employee_id = e.id
+        JOIN airline_app_flight f ON f.number = a.flight_id
         WHERE e.role = 'C'
         GROUP BY e.id
         ORDER BY total_hours DESC
@@ -147,8 +147,8 @@ class EmployeeListView(ListView):
 
         top_flights_pilot_query = """
         SELECT e.id, (e.first_name ||' '|| e.last_name) as "Name", 
-        (SELECT COUNT(a2.id) FROM airlinex_assignment a2 WHERE a2.employee_id = e.id) as "Number of flights"
-        FROM airlinex_employee as e
+        (SELECT COUNT(a2.id) FROM airline_app_assignment a2 WHERE a2.employee_id = e.id) as "Number of flights"
+        FROM airline_app_employee as e
         WHERE e.role IN ('C', 'FO', 'SO')
         ORDER BY "Number of flights" DESC
         LIMIT 1;
@@ -262,15 +262,15 @@ class PassengerListView(ListView):
         # In comparison with the documentation, we added the id here as required for handling with Django
         all_time_passenger_query = """
         SELECT distinct p.id, p.first_name, p.last_name
-        FROM airlinex_booking b
-        INNER JOIN airlinex_passenger p ON b.passenger_id = p.id
+        FROM airline_app_booking b
+        INNER JOIN airline_app_passenger p ON b.passenger_id = p.id
         WHERE p.status = 'P'
         AND NOT EXISTS (
             SELECT 1 
-            FROM airlinex_flight f 
+            FROM airline_app_flight f 
             WHERE NOT EXISTS (
                 SELECT 1 
-                FROM airlinex_booking b2 
+                FROM airline_app_booking b2 
                 WHERE b2.flight_id = f.number 
                 AND b2.passenger_id = p.id
             )

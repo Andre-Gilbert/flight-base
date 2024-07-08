@@ -1,3 +1,5 @@
+import os
+
 from django.core.management.base import BaseCommand
 from django.db import connection, transaction
 
@@ -8,7 +10,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
             with connection.cursor() as cursor:
-                with open("init_db.sql", "r") as file:
+                path = os.path.join(os.path.dirname(__file__), "database_init.sql")
+                with open(path, "r") as file:
                     sql_script = file.read()
                     cursor.execute(sql_script)
                     transaction.commit()

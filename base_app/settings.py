@@ -29,7 +29,9 @@ SECRET_KEY = "django-insecure-)*-w-35z!%@hpq#0tw^_+ch9m8nfls(ehyb3i%t-3bwo=mff%t
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -122,9 +124,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATIC_URL = "/static/"
 
-if not DEBUG:
-    STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+if "RENDER" in os.environ:
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
     STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
